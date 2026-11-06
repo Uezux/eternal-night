@@ -259,8 +259,8 @@ const sel={};
 function chips(id,opts){const w=$(id);sel[id]=opts[0];opts.forEach((o,i)=>{const b=el('button',{text:o});if(!i)b.className='on';b.onclick=()=>{sel[id]=o;[...w.children].forEach(x=>x.classList.toggle('on',x===b));};w.appendChild(b);});}
 chips('c-fmt',['AI drama reel','Story','Rant']);
 chips('c-genre',['Revenge','Romance','Family drama','Betrayal','Horror','Comedy','Mystery']);
-chips('c-chars',['American characters','Korean characters']);
-chips('c-look',['Stickman','3D','Cartoonish']);
+chips('c-chars',['American characters','Korean characters','Stickman']);
+chips('c-look',['Realistic','3D','Cartoonish']);
 chips('c-eps',['1 episode','3 episodes','5 episodes','10 episodes']);
 function epn(){return parseInt(sel['c-eps'])||1;}
 function setup(x){return 'Format: '+sel['c-fmt']+'. Genre: '+sel['c-genre']+'. Characters: '+sel['c-chars']+'. Visual look: '+sel['c-look']+'.'+(x?'':' Episodes: '+sel['c-eps']+'.');}
