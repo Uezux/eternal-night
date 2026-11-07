@@ -126,7 +126,10 @@ details>summary{cursor:pointer;font-size:17px}
 <ol class='guide' style='margin-top:12px'><li>Pick a provider below.</li><li>Make a free account and create an API key (links at the bottom).</li><li>Paste the key here and press Save. It stays only in this browser.</li></ol>
 <label for='prov'>Provider</label><select id='prov'><option value='gem'>Google Gemini (free tier, fast)</option><option value='zai'>Z.ai GLM (free Flash models)</option><option value='or'>OpenRouter (free GLM, limited per day)</option><option value='gpt'>ChatGPT / OpenAI (needs paid credits)</option><option value='cl'>Claude (needs paid credits)</option></select>
 <label for='akey' style='margin-top:10px'>API key</label><input class='tx' id='akey' type='password' autocomplete='off' placeholder='Paste your key'>
-<label for='amodel' style='margin-top:10px'>Model name</label><input class='tx' id='amodel'>
+<label for='qual' style='margin-top:10px'>Quality</label><select id='qual'><option value='low'>Low (fastest)</option><option value='medium'>Medium (balanced)</option><option value='high'>High (best results, slower)</option></select>
+<label for='msel' style='margin-top:10px'>Model</label><select id='msel'></select>
+<input class='tx' id='amodel' placeholder='Type the exact model name' style='margin-top:8px;display:none'>
+<p class='hint'>Quality picks a faster or stronger model when Model is on Auto. With ChatGPT it also sets how hard the model thinks. If a model gives an error, pick another one or choose Auto.</p>
 <p class='hint'>Get a key: <a href='https://aistudio.google.com/apikey' target='_blank' rel='noopener'>Gemini</a> (free), <a href='https://z.ai' target='_blank' rel='noopener'>Z.ai</a>, <a href='https://openrouter.ai/keys' target='_blank' rel='noopener'>OpenRouter</a>, <a href='https://platform.openai.com/api-keys' target='_blank' rel='noopener'>OpenAI</a>, <a href='https://console.anthropic.com' target='_blank' rel='noopener'>Claude</a>. A ChatGPT Plus or Claude chat subscription is not an API key, so OpenAI and Claude need separate API credits. Each provider’s key is saved separately, so you can switch anytime. Never share your key.</p>
 <button class='go' id='asave'>Save</button></details>
 <nav id='tabs'><button data-t='clips' class='on'>Clips</button><button data-t='reels'>Drama Reels</button><button data-t='chat'>Community</button></nav>
@@ -410,40 +413,49 @@ async function startChat(){
   $('csend').onclick=send;$('cmsg').onkeydown=e=>{if(e.key==='Enter')send();};
 }
 const PROV={
- gem:{t:'gem',model:'gemini-2.5-flash-lite'},
- zai:{t:'oai',url:'https://api.z.ai/api/paas/v4/chat/completions',model:'glm-4.7-flash'},
- or:{t:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'z-ai/glm-5.2:free'},
- gpt:{t:'gpt',url:'https://api.openai.com/v1/chat/completions',model:'gpt-5-mini'},
- cl:{t:'cl',url:'https://api.anthropic.com/v1/messages',model:'claude-haiku-5-5'}};
+ gem:{t:'gem',m:[['gemini-flash-lite-latest','Flash-Lite (latest, fastest)'],['gemini-flash-latest','Flash (latest)'],['gemini-3.5-flash-lite','3.5 Flash-Lite'],['gemini-3.1-flash-lite','3.1 Flash-Lite'],['gemini-pro-latest','Pro (latest, may need a paid plan)']],lv:{low:'gemini-flash-lite-latest',medium:'gemini-flash-latest',high:'gemini-pro-latest'}},
+ zai:{t:'oai',url:'https://api.z.ai/api/paas/v4/chat/completions',m:[['glm-4.7-flash','GLM-4.7 Flash (free)'],['glm-4.5-flash','GLM-4.5 Flash (free)'],['glm-4.6','GLM-4.6'],['glm-4.7','GLM-4.7']],lv:{low:'glm-4.7-flash',medium:'glm-4.6',high:'glm-4.7'}},
+ or:{t:'oai',url:'https://openrouter.ai/api/v1/chat/completions',m:[['z-ai/glm-5.2:free','GLM-5.2 (free, limited per day)'],['z-ai/glm-4.5-air:free','GLM-4.5 Air (free)']],lv:{low:'z-ai/glm-4.5-air:free',medium:'z-ai/glm-5.2:free',high:'z-ai/glm-5.2:free'}},
+ gpt:{t:'gpt',url:'https://api.openai.com/v1/chat/completions',m:[['gpt-5-nano','GPT-5 nano (fastest)'],['gpt-5-mini','GPT-5 mini'],['gpt-5','GPT-5 (best)']],lv:{low:'gpt-5-nano',medium:'gpt-5-mini',high:'gpt-5'}},
+ cl:{t:'cl',url:'https://api.anthropic.com/v1/messages',m:[['claude-haiku-5-5','Claude Haiku 5.5 (fastest)'],['claude-sonnet-5-5','Claude Sonnet 5.5'],['claude-opus-5-5','Claude Opus 5.5 (best)']],lv:{low:'claude-haiku-5-5',medium:'claude-sonnet-5-5',high:'claude-opus-5-5'}}};
 const PL={gem:'Gemini',zai:'Z.ai GLM',or:'OpenRouter',gpt:'ChatGPT',cl:'Claude'};
 function cfg(){try{const c=JSON.parse(localStorage.getItem('en_ai')||'{}');
-  if(c.k&&!c.keys){const q=c.p||'zai';c.keys={[q]:c.k};c.models={[q]:c.m};}
-  c.keys=c.keys||{};c.models=c.models||{};return c;}catch(e){return {keys:{},models:{}};}}
-function fill(){const q=$('prov').value,c=cfg();$('akey').value=c.keys[q]||'';$('amodel').value=c.models[q]||PROV[q].model;}
+  if(c.k&&!c.keys){c.keys={[c.p||'zai']:c.k};}
+  c.keys=c.keys||{};c.mm=c.mm||{};c.cm=c.cm||{};c.lv=c.lv||'medium';return c;}catch(e){return {keys:{},mm:{},cm:{},lv:'medium'};}}
+function pickModel(c,q){const m=c.mm[q]||'auto';if(m==='custom'&&c.cm[q])return c.cm[q];if(m!=='auto'&&m!=='custom')return m;return PROV[q].lv[c.lv]||PROV[q].lv.medium;}
+function fillModels(){const q=$('prov').value,c=cfg(),sl=$('msel');sl.textContent='';
+  const add=(v,t)=>{const o=el('option',{text:t});o.value=v;sl.appendChild(o);};
+  add('auto','Auto (matches the quality level)');PROV[q].m.forEach(x=>add(x[0],x[1]));add('custom','Custom name\u2026');
+  sl.value=c.mm[q]||'auto';if(sl.value!==(c.mm[q]||'auto'))sl.value='auto';
+  $('amodel').value=c.cm[q]||'';$('amodel').style.display=sl.value==='custom'?'':'none';}
+function fill(){const q=$('prov').value,c=cfg();$('akey').value=c.keys[q]||'';$('qual').value=c.lv;fillModels();}
 function showCfg(){const c=cfg(),q=c.p||'gem';$('prov').value=q;fill();
-  $('aistat').textContent=c.keys[q]?'\u00b7 using '+PL[q]:'\u00b7 add your key to use the AI';$('aiset').open=!c.keys[q];}
+  $('aistat').textContent=c.keys[q]?'\u00b7 using '+PL[q]+' ('+pickModel(c,q)+')':'\u00b7 add your key to use the AI';$('aiset').open=!c.keys[q];}
 $('prov').onchange=fill;
-$('asave').onclick=()=>{const c=cfg(),q=$('prov').value;c.p=q;c.keys[q]=$('akey').value.trim();c.models[q]=$('amodel').value.trim();delete c.k;delete c.m;
-  try{localStorage.setItem('en_ai',JSON.stringify(c));}catch(e){}showCfg();};
+$('msel').onchange=()=>{$('amodel').style.display=$('msel').value==='custom'?'':'none';};
+$('asave').onclick=()=>{const c=cfg(),q=$('prov').value;c.p=q;c.keys[q]=$('akey').value.trim();c.lv=$('qual').value;c.mm[q]=$('msel').value;c.cm[q]=$('amodel').value.trim();
+  delete c.k;delete c.m;delete c.models;try{localStorage.setItem('en_ai',JSON.stringify(c));}catch(e){}showCfg();};
 showCfg();
 async function askJson(p){
   const c=cfg(),pn=c.p||'gem',key=c.keys[pn],pv=PROV[pn];
   if(!key){$('aiset').open=true;$('aiset').scrollIntoView({behavior:'smooth'});throw new Error('Add your API key in AI settings first.');}
-  const model=c.models[pn]||pv.model,sys='Reply with valid JSON only. No markdown.';
+  const model=pickModel(c,pn),sys='Reply with valid JSON only. No markdown.';
   let url=pv.url,h={'Content-Type':'application/json'},body;
   if(pv.t==='gem'){url='https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent';h['x-goog-api-key']=key;
     body={systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:p}]}],generationConfig:{responseMimeType:'application/json',maxOutputTokens:8192}};}
   else if(pv.t==='cl'){h['x-api-key']=key;h['anthropic-version']='2023-06-01';h['anthropic-dangerous-direct-browser-access']='true';
     body={model,max_tokens:8000,system:sys,messages:[{role:'user',content:p}]};}
   else{h.Authorization='Bearer '+key;const m=[{role:'system',content:sys},{role:'user',content:p}];
-    body=pv.t==='gpt'?{model,max_completion_tokens:8000,messages:m}:{model,max_tokens:8000,temperature:0.8,messages:m};}
+    if(pv.t==='gpt'){body={model,max_completion_tokens:8000,messages:m};if(/^(gpt-5|o\d)/.test(model))body.reasoning_effort=c.lv;}
+    else body={model,max_tokens:8000,temperature:0.8,messages:m};}
   let r;
   try{r=await fetch(url,{method:'POST',headers:h,body:JSON.stringify(body)});}
   catch(e){throw new Error('Could not reach '+PL[pn]+'. Check your internet, or try another provider in AI settings.');}
   if(r.status===429){const e=new Error('rate');e.code='rate_limited';throw e;}
   if(r.status===401||r.status===403)throw new Error('The API key was rejected. Check it in AI settings.');
   if(r.status===402)throw new Error('This provider says there is no credit left.');
-  if(!r.ok)throw new Error(PL[pn]+' returned an error ('+r.status+'). Check the model name in AI settings.');
+  if(r.status===404)throw new Error(PL[pn]+' could not find the model \u201c'+model+'\u201d. Pick another model, or choose Auto, in AI settings.');
+  if(!r.ok){let tx='';try{tx=(await r.text()).slice(0,160);}catch(e){}throw new Error(PL[pn]+' returned an error ('+r.status+'). '+tx);}
   const d=await r.json();let t='';
   if(pv.t==='gem')t=((d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts)||[]).map(x=>x.text||'').join('');
   else if(pv.t==='cl')t=(d.content||[]).map(x=>x.text||'').join('');
