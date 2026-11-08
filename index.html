@@ -113,6 +113,11 @@ a{color:#fff}
 a.go{display:block;text-align:center;text-decoration:none;border-radius:10px;padding:13px;margin-top:14px;font-weight:700;font-size:16px;background:linear-gradient(135deg,#fff,#bdbdbd);color:#000;box-shadow:0 0 22px rgba(255,255,255,.5)}
 details>summary{cursor:pointer;font-size:17px}
 .item span{white-space:pre-wrap}
+.how{margin:0 0 12px;padding:10px 14px;background:rgba(255,255,255,.08);border-radius:10px;font-size:15px;line-height:1.55}
+.how summary{cursor:pointer;font-weight:700}
+.how ol,.how ul{margin:8px 0 0;padding-left:22px}
+.how li{margin:4px 0}
+.how p{margin:8px 0 0;color:var(--mute)}
 </style>
 </head>
 <body>
@@ -122,8 +127,9 @@ details>summary{cursor:pointer;font-size:17px}
 <div class='tz'><span>Text size</span><button id='zm' aria-label='Smaller text'>A−</button><button id='zp' aria-label='Bigger text'>A+</button><button id='clrall' style='margin-left:auto'>Clear all saved work</button></div>
 <p class="sub">Paste a timestamped transcript, get the best moments to clip plus titles, captions, hashtags and on-screen text.</p>
 
+<details class='how'><summary>How to use Eternal Night (start here)</summary><ol><li>Open <b>AI settings</b> below, choose a provider and paste your API key. The steps are inside. You only do this once.</li><li><b>Clips tab:</b> pick your video, make a transcript, then find the best clips with titles, captions and hashtags.</li><li><b>Drama Reels tab:</b> build an AI drama script and Google Flow prompts, one phase at a time.</li><li><b>Community tab:</b> join the Discord for help.</li><li>Your work is saved automatically in this browser. Use the clear and new buttons to start something fresh.</li><li>To open it like an app, use the Install button in your browser’s address bar, or “Add to Home Screen” on your phone.</li></ol></details>
 <details class='card' id='aiset'><summary><b>AI settings (free)</b> <span id='aistat' class='hint'></span></summary>
-<ol class='guide' style='margin-top:12px'><li>Pick a provider below.</li><li>Make a free account and create an API key (links at the bottom).</li><li>Paste the key here and press Save. It stays only in this browser.</li></ol>
+<details class='how'><summary>How to get a free key and fix problems</summary><p><b>Google Gemini (free, recommended)</b></p><ol><li>Open aistudio.google.com/apikey and sign in with Google.</li><li>Press “Create API key” and copy it.</li><li>Choose Google Gemini below, paste the key, then press Save.</li></ol><p><b>Z.ai or OpenRouter (free GLM)</b></p><ol><li>Make a free account at z.ai or openrouter.ai.</li><li>Open API keys, create one and copy it.</li><li>Choose the provider below, paste the key and press Save.</li></ol><p><b>ChatGPT or Claude</b></p><ol><li>These need paid API credits on their developer sites. A ChatGPT Plus or Claude chat subscription does not include an API key.</li></ol><p><b>If something goes wrong</b></p><ul><li>“Key was rejected”: copy the key again with no spaces.</li><li>“Could not find the model”: set Model to Auto.</li><li>“Needs a short break”: wait a minute, or switch provider.</li><li>Too slow: set Quality to Low.</li></ul></details>
 <label for='prov'>Provider</label><select id='prov'><option value='gem'>Google Gemini (free tier, fast)</option><option value='zai'>Z.ai GLM (free Flash models)</option><option value='or'>OpenRouter (free GLM, limited per day)</option><option value='gpt'>ChatGPT / OpenAI (needs paid credits)</option><option value='cl'>Claude (needs paid credits)</option></select>
 <label for='akey' style='margin-top:10px'>API key</label><input class='tx' id='akey' type='password' autocomplete='off' placeholder='Paste your key'>
 <label for='qual' style='margin-top:10px'>Quality</label><select id='qual'><option value='low'>Low (fastest)</option><option value='medium'>Medium (balanced)</option><option value='high'>High (best results, slower)</option></select>
@@ -134,9 +140,10 @@ details>summary{cursor:pointer;font-size:17px}
 <button class='go' id='asave'>Save</button></details>
 <nav id='tabs'><button data-t='clips' class='on'>Clips</button><button data-t='reels'>Drama Reels</button><button data-t='chat'>Community</button></nav>
 <section id='t-clips'>
-<ol class='guide'><li>Optional: paste your campaign rules and press “Read the requirements”.</li><li>Paste your video’s transcript with timestamps. Whisper, YouTube captions or CapCut can make one.</li><li>Choose the platform, clip length and how many clips, then press “Find the best clips”.</li><li>Tap a time range to preview it, and use Copy on each title, caption and hashtag.</li><li>Scroll down for the best US posting times and your 7-day warm-up plan.</li></ol>
+<ol class='guide'><li>Choose your video file and press “Transcribe the video”, or paste a transcript with timestamps.</li><li>Optional: paste your campaign rules and press “Read the requirements”.</li><li>Choose the platform, clip length and number of clips, then press “Find the best clips”.</li><li>Tap a time range to preview it, and use Copy on each title, caption and hashtag.</li><li>Scroll down for the best US posting times and your 7-day warm-up plan.</li></ol>
 <div class="card">
 <h2>Campaign requirements</h2>
+<details class='how'><summary>How to use this</summary><ol><li>Copy the rules from your campaign page (Whop or any brief) and paste them in the box.</li><li>Press “Read the requirements”.</li><li>Tick each item as you finish it. Your ticks are saved.</li><li>“Not clear in the rules” lists questions to ask the campaign owner.</li><li>The clip ideas you generate below will follow these rules. Press “Clear and start a new one” when you start a new campaign.</li></ol></details>
 <p class="hint" style="margin:0 0 10px">Paste the rules from your Whop campaign (or any clipping brief). I’ll turn them into a checklist, and the clip ideas below will follow them.</p>
 <textarea id="rules" style="min-height:120px" placeholder="Paste the campaign rules here: logo, thumbnail, hashtags, mentions, length, banned content, payout rules..."></textarea>
 <button class="go" id="rdbtn" style="margin-top:10px">Read the requirements</button>
@@ -146,10 +153,21 @@ details>summary{cursor:pointer;font-size:17px}
 </div>
 
 <div class="card">
+<h2>Clip finder</h2>
+<details class='how'><summary>How to use this</summary><ol><li>Press “Choose file” and pick your video. It stays on your device and is never uploaded.</li><li>Choose the language, then press “Transcribe the video”. The first time it downloads a model, so keep this tab open until it says Done.</li><li>The transcript with timestamps appears in the box below. You can fix mistakes by editing it, copy it, or download it as text or as captions (.srt).</li><li>Choose the platform, clip length and number of clips, then press “Find the best clips”.</li><li>Each result shows a score, why it works, title ideas, a caption, on-screen text and hashtags. Use Copy on any of them.</li><li>Tap a time range to jump to that part of your video.</li><li>For another video, press “New clip search”.</li></ol><p>Tip: pasting a video link is not supported. Use your video file or a transcript.</p></details>
 <video id="vid" controls playsinline></video>
-<label for="file">Video (optional, only for previewing clips)</label>
+<label for="file">Your video (for the transcript and for previewing clips)</label>
 <input type="file" id="file" accept="video/*">
 <p class="hint">Your video stays on your device. It is never uploaded.</p>
+<div class='sec' id='tbox'><label>Make a transcript from the video (free, runs on your device)</label>
+<div class='row'><div><label for='tlang'>Language</label><select id='tlang'><option value=''>Auto-detect</option><option value='english'>English</option><option value='tagalog'>Filipino (Tagalog)</option><option value='korean'>Korean</option><option value='spanish'>Spanish</option><option value='japanese'>Japanese</option></select></div>
+<div><label for='tmodel'>Accuracy</label><select id='tmodel'><option value='tiny'>Fast (smallest download)</option><option value='base' selected>Better</option><option value='small'>Best (slow, big download)</option></select></div></div>
+<button class='go' id='tbtn'>Transcribe the video</button>
+<progress id='tprog' max='100' value='0' style='width:100%;display:none;margin-top:8px'></progress>
+<div class='hint' id='tstat'></div>
+<div id='tout' style='display:none;margin-top:8px;display:none'><button id='tcopy'>Copy transcript</button> <button id='ttxt'>Download .txt</button> <button id='tsrt'>Download captions (.srt)</button></div>
+</div>
+
 
 <div class="sec"><label for="tr">Transcript with timestamps</label>
 <textarea id="tr" placeholder="0:00 Welcome back everyone&#10;0:07 Today I want to show you something crazy&#10;0:15 ..."></textarea>
@@ -172,12 +190,14 @@ details>summary{cursor:pointer;font-size:17px}
 
 <div class="card">
 <h2>Best times to post for a US audience</h2>
+<details class='how'><summary>How to use this</summary><ol><li>Each row shows a common US posting window in Eastern and Pacific time.</li><li>The “Your time” part shows the same window in your own time zone.</li><li>If it falls on the next day for you, post on the date that matches the US day.</li><li>These are starting points. Try a few windows and check your analytics to see what works for your niche.</li></ol></details>
 <p class="hint" style="margin:0 0 8px">Common starting windows, shown in US time and in your own time zone. Test them and check your analytics, because every niche is different.</p>
 <div id="times"></div>
 </div>
 
 <div class="card">
 <h2>Niche search &amp; account warm-up</h2>
+<details class='how'><summary>How to use this</summary><ol><li>Pick your platform in the Clip finder above, because the plan uses it.</li><li>Type your niche, for example fitness tips, gaming or finance.</li><li>Press “Build my warm-up plan”.</li><li>Follow the 7-day routine by hand, about 10 to 20 minutes a day: search the phrases, watch videos properly, and follow, like and comment on real accounts yourself.</li><li>Do not use bots or auto-liking tools. They can get your account flagged.</li><li>Press “Make a new plan” to start over with another niche.</li></ol></details>
 <p class="hint" style="margin:0 0 10px">Get search terms, hashtags, who to follow, and a 7-day routine to do by hand on the platform you picked above.</p>
 <input class="tx" id="nichetxt" type="text" placeholder="Your niche, e.g. fitness tips, gaming, finance, podcasts">
 <button class="go" id="wubtn" style="margin-top:10px">Build my warm-up plan</button>
@@ -189,7 +209,7 @@ details>summary{cursor:pointer;font-size:17px}
 
 <section id='t-reels' hidden>
 <div class='card'><h2>AI Drama Reels</h2>
-<ol class='guide'><li>Choose American style (25 episodes, any genre) or Korean style (one story).</li><li>Pick an idea, then approve each phase or ask for changes. Nothing moves on without your approval.</li><li>Make the character sheet images first and upload them to Google Flow. Then copy the video prompts in order.</li></ol>
+<details class='how'><summary>How to use Drama Reels</summary><ol><li><b>Choose a style.</b> American style is a 25-episode series with a genre. Korean style lets you pick a genre and how many episodes.</li><li>Paste your own story idea, or leave it empty and press <b>Start Phase 1</b> to get ideas.</li><li>Pick the idea you like. You can ask for new ones.</li><li>Each phase gives you a result. Type any changes and press <b>Change it</b>, or press the approve button to go on. Nothing continues without your approval.</li><li>When the <b>character sheet</b> prompts appear, make those images first and check the faces and name tags.</li><li>Upload the character sheet images to Google Flow as references.</li><li>Copy the <b>video prompts</b> into Google Flow in order. Use “NEXT” for more, and “Plan Episode” for the next episode.</li><li>Your progress is saved. Press “Start over” for a brand new drama.</li></ol></details>
 <button id='wzr'>Start over</button>
 <div class='err' id='rlerr'></div></div>
 <div id='wz'></div>
@@ -197,7 +217,7 @@ details>summary{cursor:pointer;font-size:17px}
 
 <section id='t-chat' hidden>
 <div class='card'><h2>Community chat</h2>
-<ol class='guide'><li>Press the button to join the Discord.</li><li>Ask questions, get help and share your clips there.</li></ol>
+<details class='how'><summary>How to use this</summary><ol><li>Press “Join the Discord”.</li><li>Ask questions, share your clips and help other friends there.</li></ol></details>
 <a class='go' id='dl' href='#' target='_blank' rel='noopener'>Join the Discord</a></div>
 </section>
 
@@ -257,7 +277,7 @@ quote();let lastH=hr();setInterval(()=>{if(hr()!==lastH){lastH=hr();quote();}},3
 
 const RK=`MASTER RULES (Korean-style AI micro drama for a female creator): Ultra-realistic, photorealistic live-action Korean-looking characters, like real actors in a modern South Korean drama: natural Korean facial proportions, skin texture, contemporary Korean hairstyles and fashion, a distinct face for each character. No anime, cartoon, doll-like or CGI look. No Indian styling unless asked. Settings are realistic modern South Korea (Seoul streets, apartments, cafes, offices, hospitals, universities, wedding venues) matched to each character's status. Vertical 9:16, Netflix-style cinematography, soft cinematic grade, 35mm or 50mm lens look, shallow depth of field. Everything is in English. Dialogue-only storytelling: NO narration, NO voice-over, NO subtitles, captions or on-screen text, NO music or sound-effect instructions. Each scene is about 6-8 seconds. Strong hook in the first 5 seconds; conflict, emotion, curiosity, a believable twist and a satisfying ending; family-friendly. Use exactly the requested number of scenes. Use Korean character names. Dialogue format: Name \u2192 Name: "line", short enough for 6-8 seconds. Never change a character's face, age, hairstyle, skin tone, body, costume or accessories unless the story requires it.`;
 const RU=`MASTER RULES (American-style AI micro drama series): Photorealistic live-action cast, cinematic high-budget film look, vertical 9:16 for TikTok, Reels and Shorts. Series format: 25 episodes, each exactly 6 clips of 10 seconds (60 s). Clip jobs: 1 HOOK (extreme hook in the first 3 seconds), 2 DREAD + CONTEXT, 3 ESCALATION, 4 REVELATION, 5 PEAK + EMOTIONAL BEAT, 6 CLIFFHANGER. Every clip has 3-5 timed shots (each about 1.5-3.5 s) with at least 1 A-roll dialogue shot and at least 2 B-roll cutaways (environment, hands, objects, reactions; avoid full faces). Every clip has on-camera dialogue: about 15-25 spoken words in total, lines under 12 words, punchy, subtext, the last line pushes into the next clip. Character consistency: every recurring character has an UPPERCASE name tag (one or two words), an Identity Description Block (dense, concrete, visual: age, build, face, eyes, brows, nose, lips, skin, hair, marks; no celebrity references) reused verbatim in every video prompt, and a name-tagged master character sheet image. No music, only dialogue and natural sound. Keep everything non-graphic and Google Flow safe: no gore, threats shown by silhouette, sound, reaction or cutaway, fictional worlds, adult characters, no real people or brands. Adapt to the selected genre (Horror, Fantasy, Sci-Fi, Medieval, History, Love and Romance); only Horror uses chase, hide and fight action.`;
-const W={st:'us',genre:'Horror',seed:'',ep:1,prevEp:''};
+const W={st:'us',genre:'Horror',kgenre:'Romance',eps:1,seed:'',ep:1,prevEp:''};
 const WS={REC:[],k:0};
 function wsave(){St.set('en_wz',{W:W,REC:WS.REC});}
 function rec(slot,fn,a,r){const x={k:slot._k,fn:fn,a:a,r:r,w:JSON.parse(JSON.stringify(W))};const i=WS.REC.findIndex(y=>y.k===slot._k);if(i>=0)WS.REC[i]=x;else WS.REC.push(x);wsave();}
@@ -284,51 +304,66 @@ function pick(label,opts,cb,sel){const s=el('div',{class:'sec'},[el('b',{text:la
 function setup(){
   const c=card('Start a new drama','Pick a style, then I will guide you phase by phase. Nothing moves forward until you approve it.');
   const g=pick('Genre',['Horror','Fantasy','Sci-Fi','Medieval','History','Love and Romance'],o=>{W.genre=o;},W.genre);
-  c.appendChild(pick('Style',['American style (25 episodes)','Korean style (one story)'],o=>{W.st=o.startsWith('Korean')?'kr':'us';g.style.display=W.st==='us'?'':'none';},'American style (25 episodes)'));
-  c.appendChild(g);
-  c.appendChild(el('div',{class:'sec'},[el('label',{for:'seed',text:'Your own story idea (optional)'}),el('textarea',{id:'seed',style:'min-height:80px',placeholder:'Paste your story or idea here, or leave empty and let me suggest some.'})]));
+  const gk=pick('Genre',['Romance','Revenge','Family drama','Thriller and mystery','Comedy','Medical drama','Fantasy','Historical (Joseon)'],o=>{W.kgenre=o;},W.kgenre);
+  const ek=pick('How many episodes?',['1 (single story)','3','5','10','15','25'],o=>{W.eps=parseInt(o)||1;},W.eps>1?String(W.eps):'1 (single story)');
+  const sync=()=>{g.style.display=W.st==='us'?'':'none';gk.style.display=W.st==='kr'?'':'none';ek.style.display=W.st==='kr'?'':'none';};
+  c.appendChild(pick('Style',['American style (25 episodes)','Korean style'],o=>{W.st=o.startsWith('Korean')?'kr':'us';sync();},W.st==='kr'?'Korean style':'American style (25 episodes)'));
+  c.appendChild(g);c.appendChild(gk);c.appendChild(ek);sync();
+  c.appendChild(el('div',{class:'sec'},[el('label',{htmlFor:'seed',text:'Your own story idea (optional)'}),el('textarea',{id:'seed',style:'min-height:80px',placeholder:'Paste your story or idea here, or leave empty and let me suggest some.'})]));
   const go=el('button',{class:'go',text:'Start Phase 1'});
-  go.onclick=()=>run(go,async()=>{W.seed=$('seed').value.trim();W.ep=1;W.prevEp='';await(W.st==='kr'?krTitles:usConcepts)(newSlot());});
+  go.onclick=()=>run(go,async()=>{W.seed=$('seed').value.trim();W.ep=1;W.prevEp='';W.plan=null;await(W.st==='kr'?krTitles:usConcepts)(newSlot());});
   c.appendChild(go);$('wz').appendChild(c);}
 $('wzr').onclick=()=>{$('wz').textContent='';$('rlerr').textContent='';WS.REC=[];WS.k=0;St.del('en_wz');setup();};
 setup();
 
 /* ---------- KOREAN STYLE ---------- */
 async function krTitles(slot,fb,pre){
-  const r=await wask(slot,'krTitles',undefined,pre,RK+' PHASE 1: Generate exactly 10 completely new, original, highly clickable English story titles (emotional, curiosity-driven, a clear conflict or mystery, suited to a female creator\u2019s audience).'+(W.seed?' Base them on this idea: '+W.seed+'.':'')+' '+J+'{"titles":["title"]}');
+  const r=await wask(slot,'krTitles',undefined,pre,RK+' PHASE 1: Genre: '+W.kgenre+'.'+(W.eps>1?' This will be a series of '+W.eps+' episodes, so the titles must promise a story big enough to sustain that many episodes.':'')+' Generate exactly 10 completely new, original, highly clickable English story titles (emotional, curiosity-driven, a clear conflict or mystery, suited to a female creator\u2019s audience).'+(W.seed?' Base them on this idea: '+W.seed+'.':'')+' '+J+'{"titles":["title"]}');
   const c=card('Phase 1: Pick a title','Set the video length and number of scenes, then press Pick on the title you like.');
   const dur=el('select'),n=el('input',{type:'number',min:3,max:20,className:'tx'});
   [['30 seconds',30],['1 minute',60],['90 seconds',90],['2 minutes',120]].forEach(d=>{const o=el('option',{text:d[0]});o.value=d[1];dur.appendChild(o);});
   dur.value=60;n.value=9;dur.onchange=()=>{n.value=Math.max(3,Math.round(dur.value/7));};
-  c.appendChild(el('div',{class:'row'},[el('div',{},[el('label',{text:'Video length'}),dur]),el('div',{},[el('label',{text:'Number of scenes'}),n])]));
+  c.appendChild(el('div',{class:'row'},[el('div',{},[el('label',{text:W.eps>1?'Length of each episode':'Video length'}),dur]),el('div',{},[el('label',{text:W.eps>1?'Scenes per episode':'Number of scenes'}),n])]));
   (r.titles||[]).forEach(t=>{const b=el('button',{text:'Pick'});
-    b.onclick=()=>run(b,async()=>{W.title=t;W.durTxt=dur.options[dur.selectedIndex].text;W.n=Math.min(20,Math.max(3,parseInt(n.value)||9));await krStory(newSlot());});
+    b.onclick=()=>run(b,async()=>{W.title=t;W.durTxt=dur.options[dur.selectedIndex].text;W.n=Math.min(20,Math.max(3,parseInt(n.value)||9));await (W.eps>1?krPlan:krStory)(newSlot());});
     c.appendChild(el('div',{class:'item'},[el('span',{text:t}),b]));});
   const nb=el('button',{text:'Give me 10 new titles',style:'margin-top:10px'});nb.onclick=()=>run(nb,()=>krTitles(slot));c.appendChild(nb);
   show(slot,c);}
 async function krStory(slot,fb,pre){
-  const r=await wask(slot,'krStory',undefined,pre,RK+' PHASE 2: Write the complete story for the title "'+W.title+'". Video duration: '+W.durTxt+'. Use exactly '+W.n+' scenes, each about 6-8 seconds. Dialogue-only storytelling.'+(W.seed?' Creator idea to respect: '+W.seed+'.':'')+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"characters":["Name: age, role, one-line look"],"scenes":[{"n":1,"heading":"short situation","dialogue":["Ji-eun \u2192 Joon-ho: line"]}]}');
+  const r=await wask(slot,'krStory',undefined,pre,RK+' PHASE 2: Write the complete story for the title "'+W.title+'". Genre: '+W.kgenre+'. Video duration: '+W.durTxt+'. Use exactly '+W.n+' scenes, each about 6-8 seconds. Dialogue-only storytelling.'+(W.seed?' Creator idea to respect: '+W.seed+'.':'')+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"characters":["Name: age, role, one-line look"],"scenes":[{"n":1,"heading":"short situation","dialogue":["Ji-eun \u2192 Joon-ho: line"]}]}');
   W.story=r;const c=card('Phase 2: Story',W.title+' \u00b7 '+W.durTxt+' \u00b7 '+W.n+' scenes');
   c.appendChild(list('Characters',r.characters||[]));
   (r.scenes||[]).forEach(s=>c.appendChild(txt('Scene '+s.n+' \u2014 '+(s.heading||'')+'\n'+(s.dialogue||[]).join('\n'))));
   gate(c,f=>krStory(slot,f),()=>krSheets(newSlot()),'Approve story (YES)');show(slot,c);}
+async function krPlan(slot,fb,pre){
+  const r=await wask(slot,'krPlan',undefined,pre,RK+' PHASE 2 (series plan): Write the series plan for the title "'+W.title+'". Genre: '+W.kgenre+'. Make exactly '+W.eps+' episodes, each about '+W.durTxt+' with '+W.n+' scenes. Every episode ends on a cliffhanger that makes viewers watch the next one, the last episode gives a satisfying payoff, and the story has believable twists. Korean character names.'+(W.seed?' Creator idea to respect: '+W.seed+'.':'')+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"logline":"","characters":["Name: age, role, one-line look"],"episodes":[{"n":1,"title":"","summary":"2 sentences","cliffhanger":""}]}');
+  W.plan=r;const c=card('Phase 2: Series plan',W.title+' \u00b7 '+W.eps+' episodes \u00b7 '+W.durTxt+' each');
+  c.appendChild(txt(r.logline||''));c.appendChild(list('Characters',r.characters||[]));
+  c.appendChild(txt('EPISODE ROADMAP\n'+(r.episodes||[]).map(e=>'Ep '+e.n+': '+e.title+' \u2014 '+e.summary+' Cliffhanger: '+e.cliffhanger).join('\n')));
+  gate(c,f=>krPlan(slot,f),()=>krSheets(newSlot()),'Approve series plan (YES)');show(slot,c);}
+async function krEpStory(slot,fb,pre){
+  const r=await wask(slot,'krEpStory',undefined,pre,RK+' PHASE 2b: Write Episode '+W.ep+' of '+W.eps+' of this approved series: '+JSON.stringify(W.plan)+(W.prevEp?' The previous episode ended with: '+W.prevEp+'.':'')+' Video duration: '+W.durTxt+'. Use exactly '+W.n+' scenes, each about 6-8 seconds. Dialogue-only storytelling with a hook in the first 5 seconds. Follow the roadmap for this episode and end on its cliffhanger'+(W.ep===W.eps?' (this is the final episode, so give the satisfying payoff instead)':'')+'. Keep every character consistent.'+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"characters":["Name: age, role, one-line look"],"scenes":[{"n":1,"heading":"short situation","dialogue":["Ji-eun \u2192 Joon-ho: line"]}]}');
+  W.story=r;const c=card('Phase 3b: Episode '+W.ep+' story',W.title+' \u00b7 '+W.durTxt+' \u00b7 '+W.n+' scenes');
+  (r.scenes||[]).forEach(s=>c.appendChild(txt('Scene '+s.n+' \u2014 '+(s.heading||'')+'\n'+(s.dialogue||[]).join('\n'))));
+  gate(c,f=>krEpStory(slot,f),()=>krBreakdown(newSlot()),'Approve episode story (YES)');show(slot,c);}
 async function krSheets(slot,fb,pre){
-  const r=await wask(slot,'krSheets',undefined,pre,RK+' PHASE 3: Create one English Character Design prompt for each important character of this approved story: '+JSON.stringify(W.story)+' Each prompt must explicitly include: ultra-realistic human, photorealistic Korean character, full-body character turnaround sheet, front view, back view, left side view, right side view, happy, sad, angry and surprised facial expressions, walking pose, professional portrait, natural human anatomy, consistent facial identity, hairstyle, skin tone, body proportions and costume, clean white studio background, professional studio lighting, neutral standing pose, highly detailed natural skin texture, realistic eyes, 8K quality, production-ready character reference sheet. Also state the name, approximate age, gender, facial features, hairstyle and hair color, skin tone, height and body proportions, costume details, accessories, and personality shown through posture.'+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"sheets":[{"name":"","prompt":""}]}');
+  const r=await wask(slot,'krSheets',undefined,pre,RK+' PHASE 3: Create one English Character Design prompt for each important character of this approved story: '+JSON.stringify(W.plan||W.story)+' Each prompt must explicitly include: ultra-realistic human, photorealistic Korean character, full-body character turnaround sheet, front view, back view, left side view, right side view, happy, sad, angry and surprised facial expressions, walking pose, professional portrait, natural human anatomy, consistent facial identity, hairstyle, skin tone, body proportions and costume, clean white studio background, professional studio lighting, neutral standing pose, highly detailed natural skin texture, realistic eyes, 8K quality, production-ready character reference sheet. Also state the name, approximate age, gender, facial features, hairstyle and hair color, skin tone, height and body proportions, costume details, accessories, and personality shown through posture.'+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"sheets":[{"name":"","prompt":""}]}');
   W.sheets=r.sheets||[];const c=card('Phase 3: Character sheets','Generate each sheet as an image and check the faces before approving.');
   W.sheets.forEach(s=>c.appendChild(list(s.name,[s.prompt])));
-  gate(c,f=>krSheets(slot,f),()=>krBreakdown(newSlot()),'Approve sheets (YES)');show(slot,c);}
+  gate(c,f=>krSheets(slot,f),()=>(W.eps>1?krEpStory:krBreakdown)(newSlot()),'Approve sheets (YES)');show(slot,c);}
 async function krBreakdown(slot,fb,pre){
   const r=await wask(slot,'krBreakdown',undefined,pre,RK+' PHASE 4: Create the complete scene breakdown for this approved story: '+JSON.stringify(W.story)+' Use exactly '+W.n+' scenes, in the same order, with no new plot twists or characters. Keep costumes, locations and time of day continuous. Use cinematic Korean drama framing and believable body language.'+(fb?' Apply these changes: '+fb+'.':'')+' '+J+'{"scenes":[{"n":1,"characters":"","purpose":"","action":"","camera":"","emotion":""}]}');
-  W.bd=r;const c=card('Phase 4: Scene breakdown');
+  W.bd=r;const c=card('Phase 4: Scene breakdown'+(W.eps>1?' \u00b7 Episode '+W.ep:''));
   (r.scenes||[]).forEach(s=>c.appendChild(txt('Scene '+s.n+'\nCharacters: '+s.characters+'\nPurpose: '+s.purpose+'\nMain action: '+s.action+'\nCamera shot: '+s.camera+'\nEmotion: '+s.emotion)));
   gate(c,f=>krBreakdown(slot,f),()=>krPrompts(newSlot(),0),'Approve breakdown (YES)');show(slot,c);}
 async function krPrompts(slot,a,pre){
   const all=(W.bd&&W.bd.scenes)||[],b=Math.min(a+10,all.length),part=all.slice(a,b);
   const r=await wask(slot,'krPrompts',a,pre,RK+' PHASE 5: Write one production-ready English AI video prompt for each of these scenes only (scene numbers '+part.map(s=>s.n).join(', ')+'). Approved story: '+JSON.stringify(W.story)+' Approved character sheets: '+JSON.stringify(W.sheets)+' Scene breakdown for these scenes: '+JSON.stringify(part)+' Every prompt must: describe ultra-realistic Korean-looking humans and repeat each visible character\u2019s approved details (face, hair, skin tone, build, exact costume); state vertical 9:16, Korean drama cinematography, Netflix-style presentation, professional lighting and grading, 35mm or 50mm lens look, shallow depth of field, realistic skin, eyes and hair, natural movement and realistic lip sync; give the modern Korean location, camera angle, camera movement, composition and character actions; use only the approved dialogue in the format Name \u2192 Name: "line" with the right speaker; fit about 6-8 seconds; be exactly one scene. Never include narration, voice-over, subtitles, captions, on-screen text, music or sound effects. '+J+'{"prompts":[{"n":1,"prompt":""}]}');
-  const ps=r.prompts||[],c=card('Phase 5: Video prompts','Scenes '+(a+1)+' to '+b+' of '+all.length);
+  const ps=r.prompts||[],c=card('Phase 5: Video prompts'+(W.eps>1?' \u00b7 Episode '+W.ep:''),'Scenes '+(a+1)+' to '+b+' of '+all.length);
   c.appendChild(el('div',{class:'sec'},[copyBtn(ps.map(p=>'SCENE '+p.n+' VIDEO PROMPT\n'+p.prompt).join('\n\n')),el('span',{class:'hint',text:'  Copy this whole batch'})]));
   ps.forEach(p=>c.appendChild(list('SCENE '+p.n+' VIDEO PROMPT',[p.prompt])));
   if(b<all.length){const nx=el('button',{class:'go nx',text:'NEXT: scenes '+(b+1)+' to '+Math.min(b+10,all.length)});nx.onclick=()=>run(nx,async()=>{await krPrompts(newSlot(),b);nx.remove();});c.appendChild(nx);}
+  else if(W.eps>1&&W.ep<W.eps){const ne=el('button',{class:'go nx',text:'Plan Episode '+(W.ep+1)});ne.onclick=()=>run(ne,async()=>{const ls=((W.story&&W.story.scenes)||[]).slice(-1)[0]||{};W.prevEp=(ls.heading||'')+' '+((ls.dialogue||[]).join(' '));W.ep+=1;await krEpStory(newSlot());ne.remove();});c.appendChild(ne);}
   else c.appendChild(el('p',{class:'hint',text:'All scenes are done. Use Start over to make another drama.'}));
   show(slot,c);}
 
@@ -381,7 +416,7 @@ async function usVideo(slot,a,pre){
 
 async function wsRestore(){
   const d=St.get('en_wz');if(!d||!d.REC||!d.REC.length)return;
-  const F={krTitles,krStory,krSheets,krBreakdown,krPrompts,usConcepts,usBible,usSheets,usBreakdown,usVideo};
+  const F={krTitles,krStory,krPlan,krEpStory,krSheets,krBreakdown,krPrompts,usConcepts,usBible,usSheets,usBreakdown,usVideo};
   try{
     $('wz').firstElementChild.style.display='none';
     WS.REC=[];
@@ -605,6 +640,62 @@ ${transcript.slice(0,60000)}`;
 };
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
 
+/* ---- transcribe the video (runs in the browser, free) ---- */
+const TMOD={tiny:'onnx-community/whisper-tiny',base:'onnx-community/whisper-base',small:'onnx-community/whisper-small'};
+let TX=null,TXkey='',TSEG=St.get('en_tseg')||[];
+function tfmt(s){s=Math.max(0,Math.floor(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0');}
+function srtT(s){let t=Math.max(0,Math.round(s*1000));const ms=t%1000;t=Math.floor(t/1000);const p=(n,l)=>String(n).padStart(l||2,'0');return p(Math.floor(t/3600))+':'+p(Math.floor(t%3600/60))+':'+p(t%60)+','+p(ms,3);}
+function dl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);}
+async function getAudio(file){
+  if(file.size>700*1024*1024)throw new Error('This file is very large. Try a video under about 30 minutes.');
+  const buf=await file.arrayBuffer(),Ctx=window.AudioContext||window.webkitAudioContext;
+  let ac;try{ac=new Ctx({sampleRate:16000});}catch(e){ac=new Ctx();}
+  let dec;try{dec=await ac.decodeAudioData(buf);}catch(e){throw new Error('Could not read the audio in this file. Try an MP4 with AAC audio, or an MP3 or WAV file.');}
+  let data;
+  if(dec.numberOfChannels===1)data=dec.getChannelData(0).slice();
+  else{const a=dec.getChannelData(0),b=dec.getChannelData(1);data=new Float32Array(a.length);for(let i=0;i<a.length;i++)data[i]=(a[i]+b[i])/2;}
+  if(dec.sampleRate!==16000){const oc=new OfflineAudioContext(1,Math.ceil(dec.duration*16000),16000),src=oc.createBufferSource(),mb=oc.createBuffer(1,data.length,dec.sampleRate);
+    mb.copyToChannel(data,0);src.buffer=mb;src.connect(oc.destination);src.start();data=(await oc.startRendering()).getChannelData(0).slice();}
+  try{ac.close();}catch(e){}
+  return {audio:data,duration:dec.duration};
+}
+async function loadTx(key,st,pr,cpuOnly){
+  st.textContent='Loading the transcription tool\u2026';
+  const {pipeline,env}=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');
+  env.allowLocalModels=false;try{env.backends.onnx.wasm.proxy=true;}catch(e){}
+  const pcb=p=>{if(p&&p.status==='progress'){pr.style.display='';pr.value=Math.round(p.progress||0);st.textContent='Downloading the model: '+Math.round(p.progress||0)+'% (only the first time)';}};
+  let gpu=false;try{gpu=!cpuOnly&&!!(navigator.gpu&&await navigator.gpu.requestAdapter());}catch(e){}
+  if(gpu){try{return {p:await pipeline('automatic-speech-recognition',TMOD[key],{device:'webgpu',dtype:{encoder_model:'fp32',decoder_model_merged:'q4'},progress_callback:pcb}),dev:'gpu'};}catch(e){}}
+  return {p:await pipeline('automatic-speech-recognition',TMOD[key],{dtype:'q8',progress_callback:pcb}),dev:'cpu'};
+}
+$('tbtn').onclick=async()=>{
+  const st=$('tstat'),pr=$('tprog'),b=$('tbtn'),f=$('file').files[0];
+  if(!f){st.textContent='First choose your video file above.';return;}
+  b.disabled=true;pr.style.display='none';let tick=null;
+  try{
+    st.textContent='Reading the audio\u2026';
+    const {audio,duration}=await getAudio(f),key=$('tmodel').value,lang=$('tlang').value;
+    if(!TX||TXkey!==key){TX=await loadTx(key,st,pr);TXkey=key;}
+    pr.style.display='none';const t0=Date.now();
+    tick=setInterval(()=>{st.textContent='Transcribing\u2026 '+Math.round((Date.now()-t0)/1000)+'s so far (video length '+tfmt(duration)+'). Keep this tab open.';},1000);
+    const opt={return_timestamps:true,chunk_length_s:30,stride_length_s:5,task:'transcribe'};if(lang)opt.language=lang;
+    let out;
+    try{out=await TX.p(audio,opt);}
+    catch(e){if(TX.dev==='gpu'){TX=await loadTx(key,st,pr,true);out=await TX.p(audio,opt);}else throw e;}
+    const segs=(out.chunks||[]).map(c=>{const s=(c.timestamp&&c.timestamp[0])||0;return {s:s,e:(c.timestamp&&c.timestamp[1]!=null)?c.timestamp[1]:s+2,t:(c.text||'').trim()};}).filter(x=>x.t);
+    if(!segs.length)throw new Error('No speech was found in this video.');
+    TSEG=segs;St.set('en_tseg',segs);
+    $('tr').value=segs.map(x=>tfmt(x.s)+' '+x.t).join('\n');saveIn();
+    $('tout').style.display='';
+    st.textContent='Done: '+segs.length+' lines. The transcript is in the box below and ready for the clip finder.';
+  }catch(e){st.textContent='Could not transcribe: '+((e&&e.message)||'try again')+(e&&e.message&&/fetch|network|import|load/i.test(e.message)?' (check your internet connection)':'');}
+  finally{if(tick)clearInterval(tick);b.disabled=false;}
+};
+$('tcopy').onclick=async()=>{try{await navigator.clipboard.writeText($('tr').value);$('tcopy').textContent='Copied';setTimeout(()=>$('tcopy').textContent='Copy transcript',1200);}catch(e){}};
+$('ttxt').onclick=()=>{const f=$('file').files[0];dl((f?f.name.replace(/\.[^.]+$/,''):'video')+'-transcript.txt',$('tr').value);};
+$('tsrt').onclick=()=>{const f=$('file').files[0];dl((f?f.name.replace(/\.[^.]+$/,''):'video')+'-captions.srt',TSEG.map((x,i)=>(i+1)+'\n'+srtT(x.s)+' --> '+srtT(Math.max(x.e,x.s+0.5))+'\n'+x.t+'\n').join('\n'));};
+if(TSEG.length)$('tout').style.display='';
+
 /* ---- saved work: restore on refresh ---- */
 function saveIn(){const o={};['rules','tr','plat','len','n','niche','nichetxt'].forEach(i=>{o[i]=$(i).value;});St.set('en_in',o);}
 document.addEventListener('input',saveIn);document.addEventListener('change',saveIn);
@@ -615,10 +706,10 @@ document.addEventListener('input',saveIn);document.addEventListener('change',sav
   const sw=St.get('en_wu');if(sw&&sw.r){try{renderWU(sw.r);}catch(e){}}
 })();
 $('rdclr').onclick=()=>{$('rules').value='';$('reqout').textContent='';$('rderr').textContent='';rulesText='';TK={};St.del('en_req');St.del('en_tick');saveIn();};
-$('clrclips').onclick=()=>{$('tr').value='';$('out').textContent='';$('err').textContent='';St.del('en_clips');saveIn();};
+$('clrclips').onclick=()=>{St.del('en_tseg');TSEG=[];$('tout').style.display='none';$('tstat').textContent='';$('tr').value='';$('out').textContent='';$('err').textContent='';St.del('en_clips');saveIn();};
 $('wuclr').onclick=()=>{$('nichetxt').value='';$('wuout').textContent='';$('wuerr').textContent='';St.del('en_wu');saveIn();};
 let cc=null;$('clrall').onclick=()=>{const b=$('clrall');if(!cc){b.textContent='Tap again to confirm';cc=setTimeout(()=>{cc=null;b.textContent='Clear all saved work';},4000);return;}
-  ['en_in','en_clips','en_req','en_tick','en_wu','en_wz','en_tab'].forEach(k=>St.del(k));location.reload();};
+  ['en_in','en_clips','en_req','en_tick','en_wu','en_wz','en_tab','en_tseg'].forEach(k=>St.del(k));location.reload();};
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b&&b.dataset.t)St.set('en_tab',b.dataset.t);});
 {const t=St.get('en_tab');if(t&&t!=='clips'){const b=document.querySelector('#tabs button[data-t="'+t+'"]');if(b)b.click();}}
 wsRestore().catch(()=>{});
